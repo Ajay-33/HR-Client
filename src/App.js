@@ -8,10 +8,10 @@ import Github from "./components/Github";
 // Testinggggggggggggg
 function App() {
   return (
-    <div>
+    <div className="">
     <Router>
       <Navbar />
-      <Routes>
+      <Routes >
         <Route exact path="/" element={<LinkedIn />} />
         <Route exact path="/twitter" element={<Twitter />} />
         <Route exact path="/github" element={<Github/>}/>

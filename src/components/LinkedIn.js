@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SearchModal from "./SearchModal"; // Import the modal component
 
 const LinkedIn = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -10,6 +11,9 @@ const LinkedIn = () => {
     const searches = localStorage.getItem("savedSearches");
     return searches ? JSON.parse(searches) : [];
   });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [generatedQuery, setGeneratedQuery] = useState("");
 
   const generateLink = () => {
     const baseURL = "https://www.google.com/search?q=site:linkedin.com";
@@ -26,25 +30,32 @@ const LinkedIn = () => {
     return `${baseURL} ${encodeURIComponent(query)}`;
   };
 
+  const handleSearchClick = () => {
+    const query = generateLink();
+    setGeneratedQuery(query);
+    setIsModalOpen(true); // open the modal
+  };
+
   const handleSaveSearch = () => {
-    const link = generateLink();
+    const link = generatedQuery;
     if (link && !savedSearches.some(search => search.link === link)) {
       const updatedSearches = [...savedSearches, { jobTitle, link }];
       setSavedSearches(updatedSearches);
       localStorage.setItem("savedSearches", JSON.stringify(updatedSearches));
+      setIsModalOpen(false); // close the modal
     }
   };
 
-  const handleCopyLink = (link) => {
-    navigator.clipboard.writeText(link);
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(generatedQuery);
   };
 
-  const handleGoToGoogle = (link) => {
-    window.open(link, "_blank");
+  const handleGoToGoogle = () => {
+    window.open(generatedQuery, "_blank");
+    setIsModalOpen(false); // close the modal
   };
 
   return (
-    
     <div className="p-6 max-w-6xl mx-auto bg-white rounded-xl shadow-lg flex justify-between">
       {/* Left side form */}
       <div className="w-2/3">
@@ -108,7 +119,7 @@ const LinkedIn = () => {
         <div className="flex justify-center mt-6">
           <button
             type="button"
-            onClick={handleSaveSearch}
+            onClick={handleSearchClick} // open the modal instead of saving directly
             className="bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Find the right people on LinkedIn
@@ -146,6 +157,14 @@ const LinkedIn = () => {
           )}
         </div>
       </div>
+      <SearchModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        query={generatedQuery}
+        onCopy={handleCopyLink}
+        onSave={handleSaveSearch}
+        onOpen={handleGoToGoogle}
+      />
     </div>
   );
 };
