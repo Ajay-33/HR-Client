@@ -4,8 +4,8 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-10 ">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-gray-900 text-white py-10 px-5 ">
+      <div className="container mx-auto flex justify-between ">
         {/* Left section with logo and navigation links */}
         <div>
           <h2 className="text-2xl font-bold mb-4">
@@ -13,7 +13,7 @@ function Footer() {
           </h2>
           <nav className="mb-4">s
             <ul className="space-y-2">
-              <li><a href="#" className="hover:underline">Home</a></li>
+              {/* <li><a href="#" className="hover:underline">Home</a></li> */}
             </ul>
           </nav>
           <p className="text-sm">bjhdbcbjc.com &copy; 2020</p>
@@ -59,10 +59,10 @@ function Footer() {
           
           {/* Social media icons */}
           <div className="flex space-x-4 mt-4 text-3xl">
-            <a href="#" className="hover:opacity-75"><i className="fab fa-facebook-square"></i></a>
+            {/* <a href="#" className="hover:opacity-75"><i className="fab fa-facebook-square"></i></a>
             <a href="#" className="hover:opacity-75"><i className="fab fa-twitter-square"></i></a>
             <a href="#" className="hover:opacity-75"><i className="fab fa-linkedin"></i></a>
-            <a href="#" className="hover:opacity-75"><i className="fab fa-github-square"></i></a>
+            <a href="#" className="hover:opacity-75"><i className="fab fa-github-square"></i></a> */}
           </div>
         </div>
       </div>

@@ -1,26 +1,75 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
-    <div className="flex flex-col bg-red-100 ">
-      <div className="flex justify-between p-4 mb-8">
-        <div className="flex">
-          <div className="text-3xl"> HR Shop </div>
+    <header className="bg-white shadow-md">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+        {/* Left side: Logo or Brand Name */}
+        <div className="text-3xl font-bold text-gray-800">
+          HR <span className="text-red-500">Shop</span>
         </div>
-        <div className="flex gap-x-3 text-xl">
-          <div>About</div>
-          <div>Login</div>
-          <div>Signup</div>
+
+        {/* Right side: Navigation Links */}
+        <nav className="hidden md:flex space-x-8 text-lg">
+          <Link
+            to="/"
+            className="text-gray-600 hover:text-red-500 transition duration-300"
+          >
+            LinkedIn
+          </Link>
+          <Link
+            to="/github"
+            className="text-gray-600 hover:text-red-500 transition duration-300"
+          >
+            Github
+          </Link>
+          <Link
+            to="/twitter"
+            className="text-gray-600 hover:text-red-500 transition duration-300"
+          >
+            Twitter
+          </Link>
+        </nav>
+
+        {/* Login/Signup Buttons */}
+        <div className="flex space-x-4">
+          <Link
+            to="/signup"
+            className=" border border-gray-500  py-2 px-4 rounded-xl hover:bg-gray-100 transition duration-300"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className=" border border-white text-white  bg-red-500 py-2 px-4 rounded-xl hover:bg-red-600 transition duration-300"
+          >
+            Signup
+          </Link>
         </div>
       </div>
-      <div className="bg-red-100 flex">
-        <div className="w-1/2 flex justify-between p-4 text-xl">
-          <Link to="/">LinkedIn</Link>
-          <Link to="/github">Github</Link>
-          <Link to="/twitter">Twitter</Link>
-        </div>
+
+      {/* Mobile Menu (if necessary) */}
+      <div className="md:hidden bg-gray-100 px-4 py-2">
+        <nav className="flex justify-between text-lg text-gray-600">
+          <Link to="/" className="hover:text-red-500 transition duration-300">
+            LinkedIn
+          </Link>
+          <Link
+            to="/github"
+            className="hover:text-red-500 transition duration-300"
+          >
+            Github
+          </Link>
+          <Link
+            to="/twitter"
+            className="hover:text-red-500 transition duration-300"
+          >
+            Twitter
+          </Link>
+        </nav>
       </div>
-    </div>
+    </header>
   );
 }
 

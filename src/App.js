@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Twitter from "./components/Twitter";
 import Github from "./components/Github";
 import Footer from "./components/Footer";
-// Testinggggggggggggg
+
 function App() {
   return (
     <div className="">
