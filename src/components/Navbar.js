@@ -10,28 +10,6 @@ function Navbar() {
           HR <span className="text-red-500">Shop</span>
         </div>
 
-        {/* Right side: Navigation Links */}
-        <nav className="hidden md:flex space-x-8 text-lg">
-          <Link
-            to="/"
-            className="text-gray-600 hover:text-red-500 transition duration-300"
-          >
-            LinkedIn
-          </Link>
-          <Link
-            to="/github"
-            className="text-gray-600 hover:text-red-500 transition duration-300"
-          >
-            Github
-          </Link>
-          <Link
-            to="/twitter"
-            className="text-gray-600 hover:text-red-500 transition duration-300"
-          >
-            Twitter
-          </Link>
-        </nav>
-
         {/* Login/Signup Buttons */}
         <div className="flex space-x-4">
           <Link

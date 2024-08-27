@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import SearchModal from "./SearchModal"; // Import the modal component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons"; // Import the cross icon
-import Sidebar from "./SideBar";
 
 const LinkedIn = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -69,7 +68,7 @@ const LinkedIn = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-start justify-between p-8 mx-auto bg-gradient-to-br from-blue-100 to-blue-300 shadow-lg w-full pb-12 ">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 items-start justify-between p-8 mx-auto  shadow-lg w-full pb-12 ">
       {/* Left side form */}
       {/* <Sidebar/> */}
       <div className="w-full md:w-2/3 px-4  border-r-2">
