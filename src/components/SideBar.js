@@ -6,7 +6,7 @@ import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 
 function Sidebar() {
   return (
-    <div className="h-screen w-20 flex flex-col bg-gray-800 shadow-lg">
+    <div className=" w-20 flex flex-col bg-gray-800 shadow-lg">
       <div className="flex-1 flex flex-col items-center justify-center space-y-8">
         {/* LinkedIn */}
         <Link

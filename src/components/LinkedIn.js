@@ -54,11 +54,12 @@ const LinkedIn = () => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(generatedQuery);
+    setIsModalOpen(false);
   };
 
   const handleGoToGoogle = () => {
     window.open(generatedQuery, "_blank");
-    setIsModalOpen(false); // close the modal
+    // setIsModalOpen(false); // close the modal
   };
 
   const handleDeleteSearch = (index) => {
@@ -70,7 +71,7 @@ const LinkedIn = () => {
   return (
     <div className="flex flex-col md:flex-row items-start justify-between p-8 mx-auto bg-gradient-to-br from-blue-100 to-blue-300 shadow-lg w-full pb-12 ">
       {/* Left side form */}
-      <Sidebar/>
+      {/* <Sidebar/> */}
       <div className="w-full md:w-2/3 px-4  border-r-2">
         <h1 className="text-3xl font-extrabold mb-6 text-gray-800">
           Find LinkedIn Profiles with Ease
