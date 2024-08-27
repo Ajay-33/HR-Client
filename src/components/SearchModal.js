@@ -5,7 +5,7 @@ const SearchModal = ({ isOpen, onClose, query, onCopy, onSave, onOpen }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg p-8 w-1/2">
+      <div className="relative bg-white rounded-lg p-8 w-1/2">
         <h2 className="text-xl font-semibold mb-4">Your Search Query</h2>
         <p className="mb-4">
           Copy, save or open the search string in Google and find the right candidates.
@@ -38,7 +38,7 @@ const SearchModal = ({ isOpen, onClose, query, onCopy, onSave, onOpen }) => {
         </div>
         <button
           onClick={onClose}
-          className="absolute top-0 right-0 m-4 text-gray-700 hover:text-gray-900"
+          className="absolute top-5 right-4 text-gray-700 hover:text-gray-900 text-3xl"
         >
           &times;
         </button>

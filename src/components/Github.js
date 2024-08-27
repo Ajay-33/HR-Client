@@ -15,16 +15,17 @@ const GitHub = () => {
   const [generatedQuery, setGeneratedQuery] = useState("");
 
   const generateLink = () => {
-    const baseURL = "https://www.google.com/search?q=site:github.com";
+    const baseURL = "https://www.google.com/search?q=site:github.com+\"joined+on\"+-intitle:\"at+master\"+-inurl:\"tab\"+-inurl:\"jobs.\"+-inurl:\"articles\"";
     const query = [
-      skills ? `${skills}` : "",
-      location ? `location:"${location}"` : "",
+      skills ? `+"${skills}"` : "",
+      location ? `+location:"${location}"` : "",
     ]
       .filter(Boolean)
-      .join(" ");
-
-    return `${baseURL} ${encodeURIComponent(query)}`;
+      .join("");
+  
+    return `${baseURL}${encodeURIComponent(query)}`;
   };
+  
 
   const handleSearchClick = () => {
     const query = generateLink();
@@ -47,11 +48,12 @@ const GitHub = () => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(generatedQuery);
+    setIsModalOpen(false);
   };
 
   const handleGoToGoogle = () => {
     window.open(generatedQuery, "_blank");
-    setIsModalOpen(false); // close the modal
+    
   };
 
   const handleDeleteSearch = (index) => {
@@ -64,7 +66,7 @@ const GitHub = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen md:flex-row bg-gradient-to-br from-blue-100 to-blue-300 items-start justify-between p-8 mx-auto shadow-lg w-full pb-12">
+    <div className="flex flex-col md:flex-row bg-gradient-to-br from-blue-100 to-blue-300 items-start justify-between p-8 mx-auto shadow-lg w-full pb-12">
       {/* Left side form */}
       <div className="w-full md:w-2/3 px-4 border-r-2">
         <h1 className="text-3xl font-extrabold mb-6 text-gray-800">

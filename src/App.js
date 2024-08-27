@@ -7,20 +7,22 @@ import Twitter from "./components/Twitter";
 import Github from "./components/Github";
 import Footer from "./components/Footer";
 import Sidebar from "./components/SideBar";
+import HeroSection from "./components/HeroSection"
+import SearchBox from "./components/SearchBox";
 
 function App() {
   return (
     <div>
       <Router>
+      
         <Navbar />
-        <div className="flex bg-gradient-to-br from-blue-100 to-blue-300 space-x-2">
-          <Sidebar />
+        <HeroSection />
+        {/* <div className="flex bg-gradient-to-br from-blue-100 to-blue-300 space-x-2"> */}
+          {/* <Sidebar /> */}
           <Routes>
-            <Route exact path="/" element={<LinkedIn />} />
-            <Route exact path="/twitter" element={<Twitter />} />
-            <Route exact path="/github" element={<Github />} />
+            <Route exact path="/" element={<SearchBox/>} />
           </Routes>
-        </div>
+        {/* </div> */}
         <Footer />
       </Router>
     </div>
