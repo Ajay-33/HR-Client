@@ -3,7 +3,6 @@ import SearchModal from "./SearchModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faBriefcase, faMapMarkerAlt, faBan, faGraduationCap, faBuilding, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-
 const LinkedIn = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [location, setLocation] = useState("");
@@ -68,13 +67,7 @@ const LinkedIn = () => {
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row  bg-gradient-to-br from-green-200 via-orange-200 to-white items-start justify-between p-8 mx-auto shadow-lg w-full pb-12">
-      {/* Decorative Shapes */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 right-16 w-32 h-32 bg-yellow-300 rounded-full opacity-40 mix-blend-multiply animate-pulse"></div>
-        <div className="absolute bottom-24 left-16 w-48 h-48 bg-blue-300 rounded-full opacity-40 mix-blend-multiply animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-green-300 rounded-full opacity-40 mix-blend-multiply animate-pulse"></div>
-      </div>
+    <div className="relative flex flex-col md:flex-row to-gray-700 items-start justify-between p-8 mx-auto w-full pb-12 ">
 
       {/* Left side form */}
       <div className="relative z-10 w-full md:w-2/3 px-4 border-r-2 border-white/20">
@@ -88,10 +81,10 @@ const LinkedIn = () => {
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., United States"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faGlobe} />
             </div>
           </div>
@@ -101,10 +94,10 @@ const LinkedIn = () => {
               type="text"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., Software Engineer"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faBriefcase} />
             </div>
           </div>
@@ -114,10 +107,10 @@ const LinkedIn = () => {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., San Francisco, Remote"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faMapMarkerAlt} />
             </div>
           </div>
@@ -127,10 +120,10 @@ const LinkedIn = () => {
               type="text"
               value={keywords}
               onChange={(e) => setKeywords(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., Manager, Executive"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faBan} />
             </div>
           </div>
@@ -140,10 +133,10 @@ const LinkedIn = () => {
               type="text"
               value={education}
               onChange={(e) => setEducation(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., Bachelor's, Master's"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faGraduationCap} />
             </div>
           </div>
@@ -153,10 +146,10 @@ const LinkedIn = () => {
               type="text"
               value={currentEmployer}
               onChange={(e) => setCurrentEmployer(e.target.value)}
-              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 placeholder-white/70 transition-all duration-300"
+              className="p-4 bg-white/10 text-white border border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300"
               placeholder="e.g., Google, Microsoft"
             />
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/40 pointer-events-none">
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faBuilding} />
             </div>
           </div>
@@ -165,7 +158,7 @@ const LinkedIn = () => {
           <button
             type="button"
             onClick={handleSearchClick}
-            className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white py-3 px-8 rounded-full shadow-lg hover:from-yellow-500 hover:to-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300 transform hover:scale-105"
+            className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3 px-8 rounded-full shadow-lg hover:from-cyan-400 hover:to-blue-500 transition duration-300 transform hover:scale-105"
           >
             Find the Right People on LinkedIn
           </button>

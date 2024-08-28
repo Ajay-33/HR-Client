@@ -4,37 +4,37 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <header className="bg-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+      <div className="container mx-auto flex justify-between items-center py-2 px-4">
         {/* Left side: Logo or Brand Name */}
         <div className="text-3xl font-bold text-gray-800">
-          HR <span className="text-red-500">Shop</span>
+          HR <span className="text-purple-700">Shop</span>
         </div>
 
         {/* Center: Navigation Links */}
         <nav className="hidden md:flex space-x-8">
           <Link
             to="/tracking"
-            className="text-gray-700 hover:text-red-500 transition duration-300"
+            className="text-gray-700 hover:text-purple-700 transition duration-300"
           >
-            Tracking
+            Home
           </Link>
           <Link
             to="/find-box"
-            className="text-gray-700 hover:text-red-500 transition duration-300"
+            className="text-gray-800 hover:text-purple-700 transition duration-300"
           >
-            Find Box
+            LinkedIn
           </Link>
           <Link
             to="/store"
-            className="text-gray-700 hover:text-red-500 transition duration-300"
+            className="text-gray-800 hover:text-purple-700 transition duration-300"
           >
-            Store
+            Twitter
           </Link>
           <Link
             to="/location"
-            className="text-gray-700 hover:text-red-500 transition duration-300"
+            className="text-gray-800 hover:text-purple-700 transition duration-300"
           >
-            Location
+            Github
           </Link>
         </nav>
 
@@ -42,13 +42,13 @@ const Navbar = () => {
         <div className="flex space-x-4">
           <Link
             to="/login"
-            className="border border-gray-500 text-gray-800 py-2 px-4 rounded-xl hover:bg-gray-100 transition duration-300"
+            className="border border-gray-500 hover:bg-gray-200 text-gray-800 py-1 px-3 rounded-full transition duration-300"
           >
             Login
           </Link>
           <Link
             to="/signup"
-            className="bg-red-500 text-white py-2 px-4 rounded-xl hover:bg-red-600 transition duration-300"
+            className="bg-purple-800 text-white py-1 px-3 rounded-full hover:bg-purple-600 transition duration-300"
           >
             Signup
           </Link>
@@ -57,19 +57,19 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className="md:hidden bg-gray-100 px-4 py-2">
-        <nav className="flex justify-between text-lg text-gray-600">
-          <Link to="/" className="hover:text-red-500 transition duration-300">
+        <nav className="flex justify-between text-lg text-gray-700">
+          <Link to="/" className="hover:text-blue-500 transition duration-300">
             LinkedIn
           </Link>
           <Link
             to="/github"
-            className="hover:text-red-500 transition duration-300"
+            className="hover:text-blue-500 transition duration-300"
           >
             Github
           </Link>
           <Link
             to="/twitter"
-            className="hover:text-red-500 transition duration-300"
+            className="hover:text-blue-500 transition duration-300"
           >
             Twitter
           </Link>

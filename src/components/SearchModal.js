@@ -4,7 +4,7 @@ const SearchModal = ({ isOpen, onClose, query, onCopy, onSave, onOpen }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="relative bg-white rounded-lg p-8 w-1/2">
         <h2 className="text-xl font-semibold mb-4">Your Search Query</h2>
         <p className="mb-4">
