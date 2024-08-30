@@ -17,8 +17,6 @@ function Home() {
 
       <div className="relative z-10">
         <LinkedIn />
-        <Twitter />
-        <GitHub />
       </div>
     </div>
   );
