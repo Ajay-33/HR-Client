@@ -36,7 +36,7 @@ const HeroSection = () => {
         <img
           src={deliveryPersonImage}
           alt="Delivery Person"
-          className="w-full max-w-md mx-auto filter drop-shadow-lg rounded-3xl transform hover:scale-105 transition duration-500"
+          className="w-full max-w-md mx-auto  filter drop-shadow-lg rounded-3xl transform hover:scale-105 transition duration-500"
         />
 
       </div>

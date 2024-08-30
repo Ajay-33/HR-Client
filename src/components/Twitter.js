@@ -16,9 +16,9 @@ const Twitter = () => {
   const [generatedQuery, setGeneratedQuery] = useState("");
 
   const generateLink = () => {
-    const baseURL = "https://www.google.com/search?q=site:twitter.com";
+    const baseURL = "http://www.google.com/search?q=site:twitter.com -inurl:(search|favorites|status|statuses|jobs) -intitle:(job|jobs) -recruiter -HR -careers";
     const query = [
-      location ? `+"${location}"` : "",
+      `+"${location}"`,
       skillsInclude ? `+"${skillsInclude}"` : "",
       skillsExclude ? `-"${skillsExclude}"` : "",
     ]
