@@ -1,8 +1,8 @@
 import React from "react";
 import HeroSection from "../components/HeroSection";
 import LinkedIn from "../components/LinkedIn";
-import Twitter from "../components/Twitter";
-import GitHub from "../components/Github";
+// import Twitter from "../components/Twitter";
+// import GitHub from "../components/Github";
 
 function Home() {
   return (

@@ -3,6 +3,7 @@ import Autosuggest from "react-autosuggest";
 import SearchModal from "./SearchModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { occupations } from "../occupation";
+import { educations } from "../educations";
 import {
   faGlobe,
   faBriefcase,
@@ -15,6 +16,8 @@ import {
 
 // Limit suggestions to 4
 const MAX_SUGGESTIONS = 4;
+
+// Education options
 
 const LinkedIn = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -80,24 +83,24 @@ const LinkedIn = () => {
     localStorage.setItem("savedSearches", JSON.stringify(updatedSearches));
   };
 
-  // Autosuggest functions
+  // Autosuggest functions for Job Title
   const onSuggestionsFetchRequested = ({ value }) => {
-    setSuggestions(getSuggestions(value));
+    setSuggestions(getSuggestions(value, occupations));
   };
 
   const onSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
 
-  const getSuggestions = (value) => {
+  const getSuggestions = (value, sourceArray) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
     return inputLength === 0
       ? []
-      : occupations
+      : sourceArray
           .filter(
-            (job) => job.toLowerCase().slice(0, inputLength) === inputValue
+            (item) => item.toLowerCase().slice(0, inputLength) === inputValue
           )
           .slice(0, MAX_SUGGESTIONS); // Limit to MAX_SUGGESTIONS
   };
@@ -107,7 +110,7 @@ const LinkedIn = () => {
   const renderSuggestion = (suggestion) => <div>{suggestion}</div>;
 
   return (
-    <div className="relative flex flex-col md:flex-row to-gray-700 items-start justify-between p-8 mx-auto w-full pb-12 ">
+    <div className="relative flex flex-col md:flex-row to-gray-700 items-start justify-between p-8 mx-auto w-full pb-24">
       <div className="relative z-10 w-full md:w-2/3 px-4 border-r-2 border-white/20">
         <h1 className="text-4xl font-extrabold mb-6 text-white">
           Explore Profiles with Ease
@@ -145,8 +148,8 @@ const LinkedIn = () => {
                 container: "relative",
                 suggestionsContainerOpen: "absolute z-10 mt-2 w-full",
                 suggestionsList:
-                  "bg-purple-700 backdrop-blur-lg bg-opacity-80 text-white rounded-lg shadow-lg",
-                suggestion: "p-4 cursor-pointer hover:bg-purple-600 rounded-lg",
+                  "bg-purple-700 backdrop-blur-lg bg-opacity-50 text-white rounded-2xl shadow-lg",
+                suggestion: "p-4 cursor-pointer hover:bg-purple-600 rounded-2xl",
                 suggestionHighlighted: "bg-purple-500",
               }}
             />
@@ -184,39 +187,35 @@ const LinkedIn = () => {
               <FontAwesomeIcon icon={faCode} />
             </div>
           </div>
+
+          {/* Updated Education Field with Autosuggest */}
           <div className="relative flex flex-col">
             <label className="font-semibold text-white mb-2">Education:</label>
-            <select
-              value={education}
-              onChange={(e) => setEducation(e.target.value)}
-              className="p-4 bg-purple-800 bg-opacity-50 text-white border border-purple-400 rounded-3xl shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 backdrop-blur-md"
-            >
-              <option
-                value="All Candidates"
-                className="bg-purple-700 text-white hover:bg-purple-600 rounded-2xl"
-              >
-                All Candidates
-              </option>
-              <option
-                value="Bachelor's Degree"
-                className="bg-purple-700 text-white hover:bg-purple-600 rounded-2xl"
-              >
-                Bachelor's Degree
-              </option>
-              <option
-                value="Master's Degree"
-                className="bg-purple-700 text-white hover:bg-purple-600 rounded-2xl"
-              >
-                Master's Degree
-              </option>
-              <option
-                value="Doctoral Degree"
-                className="bg-purple-700 text-white hover:bg-purple-600 rounded-2xl"
-              >
-                Doctoral Degree
-              </option>
-            </select>
-            <div className="absolute top-16 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
+            <Autosuggest
+              suggestions={suggestions}
+              onSuggestionsFetchRequested={({ value }) =>
+                setSuggestions(getSuggestions(value, educations))
+              }
+              onSuggestionsClearRequested={onSuggestionsClearRequested}
+              getSuggestionValue={getSuggestionValue}
+              renderSuggestion={renderSuggestion}
+              inputProps={{
+                placeholder: "e.g., Bachelor's Degree",
+                value: education,
+                onChange: (_, { newValue }) => setEducation(newValue),
+                className:
+                  "p-4 bg-white/10 text-white border w-full border-transparent rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-white/70 transition-all duration-300",
+              }}
+              theme={{
+                container: "relative",
+                suggestionsContainerOpen: "absolute z-10 mt-2 w-full",
+                suggestionsList:
+                  "bg-purple-700 backdrop-blur-lg bg-opacity-50 text-white rounded-2xl shadow-lg",
+                suggestion: "p-4 cursor-pointer hover:bg-purple-600  rounded-2xl",
+                suggestionHighlighted: "bg-purple-500",
+              }}
+            />
+            <div className="absolute top-3/4 right-6 text-xl transform -translate-y-3/4 text-white/40 pointer-events-none">
               <FontAwesomeIcon icon={faGraduationCap} />
             </div>
           </div>
