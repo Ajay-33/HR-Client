@@ -1,7 +1,51 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Assuming you're using react-router for navigation
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/main");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const onChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+  const handleSubmission = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(process.env.REACT_APP_HOST);
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST}/api/v1/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
+
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
+      if (response.ok && json.success) {
+        localStorage.setItem("token", json.token);
+        localStorage.setItem("userName", json.user.firstName);
+        console.log("double success");
+        navigate("/main");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 relative overflow-hidden">
       {/* Background Blurred Circles */}
@@ -13,30 +57,42 @@ function Login() {
 
       {/* Translucent Form */}
       <div className="relative w-full max-w-md p-8 mx-4 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg border border-purple-300">
-        <h2 className="text-2xl font-bold text-center text-white mb-8">Login</h2>
-        <form>
+        <h2 className="text-2xl font-bold text-center text-white mb-8">
+          Login
+        </h2>
+        <form onSubmit={handleSubmission}>
           <div className="mb-6">
-            <label className="block text-white text-sm font-semibold mb-2" htmlFor="email">
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
               type="email"
               id="email"
+              name="email"
               className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
               placeholder="Enter your email"
               required
+              onChange={onChange}
             />
           </div>
           <div className="mb-6">
-            <label className="block text-white text-sm font-semibold mb-2" htmlFor="password">
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
               type="password"
               id="password"
+              name="password"
               className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
               placeholder="Enter your password"
               required
+              onChange={onChange}
             />
           </div>
           {/* Enhanced Login Button */}
@@ -72,10 +128,7 @@ function Login() {
                 fill="#34A853"
                 d="M24 44c5.54 0 10.2-1.83 13.6-4.98l-7.56-5.86C27.77 34.98 25.94 35.5 24 35.5c-5.94 0-10.9-5.8-11.64-12.65l-7.12 5.52C7.18 40.34 14.8 46 24 46z"
               />
-              <path
-                fill="none"
-                d="M2 2h44v44H2z"
-              />
+              <path fill="none" d="M2 2h44v44H2z" />
             </svg>
             <span>Sign in with Google</span>
           </button>

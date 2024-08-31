@@ -11,6 +11,7 @@ import HeroSection from "./components/HeroSection";
 import Home from "./pages/Home";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Main from "./pages/Main";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/main" element={<Main/>}/>
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
         </Routes>

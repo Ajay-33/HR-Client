@@ -1,7 +1,71 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Assuming you're using react-router for navigation
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Assuming you're using react-router for navigation
 
 function SignUp() {
+  const [credentials, setCredentials] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/main");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmission = async (e) => {
+    e.preventDefault();
+    const { fname, lname, email, password } = credentials;
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      console.log("Invalid Password");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fname: fname,
+            lname: lname,
+            email,
+            password,
+          }),
+        }
+      );
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        throw new Error(json.message || "Network response was not ok");
+      }
+
+      if (json.success) {
+        localStorage.setItem("userName", json.user.firstName);
+        localStorage.setItem("token", json.token);
+        console.log("Succes");
+        navigate("/main");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 relative overflow-hidden">
       {/* Background Blurred Circles */}
@@ -13,41 +77,75 @@ function SignUp() {
 
       {/* Translucent Form */}
       <div className="relative w-full max-w-md p-8 mx-4 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg border border-purple-300">
-        <h2 className="text-2xl font-bold text-center text-white mb-8">Sign Up</h2>
-        <form>
+        <h2 className="text-2xl font-bold text-center text-white mb-8">
+          Sign Up
+        </h2>
+        <form onSubmit={handleSubmission}>
           <div className="mb-6">
-            <label className="block text-white text-sm font-semibold mb-2" htmlFor="username">
-              Username
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="fname"
+            >
+              First Name
             </label>
             <input
               type="text"
-              id="username"
+              id="fname"
+              name="fname"
               className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
-              placeholder="Enter your username"
+              placeholder="Enter your first name"
               required
+              onChange={onChange}
             />
           </div>
           <div className="mb-6">
-            <label className="block text-white text-sm font-semibold mb-2" htmlFor="email">
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="lname"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lname"
+              name="lname"
+              className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
+              placeholder="Enter your last name"
+              required
+              onChange={onChange}
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
               type="email"
               id="email"
+              name="email"
               className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
               placeholder="Enter your email"
               required
+              onChange={onChange}
             />
           </div>
           <div className="mb-6">
-            <label className="block text-white text-sm font-semibold mb-2" htmlFor="password">
+            <label
+              className="block text-white text-sm font-semibold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
               type="password"
               id="password"
+              name="password"
               className="w-full px-4 py-2 text-white bg-transparent border-b border-purple-300 placeholder-white focus:outline-none focus:border-purple-500"
               placeholder="Enter your password"
+              onChange={onChange}
               required
             />
           </div>
@@ -84,10 +182,7 @@ function SignUp() {
                 fill="#34A853"
                 d="M24 44c5.54 0 10.2-1.83 13.6-4.98l-7.56-5.86C27.77 34.98 25.94 35.5 24 35.5c-5.94 0-10.9-5.8-11.64-12.65l-7.12 5.52C7.18 40.34 14.8 46 24 46z"
               />
-              <path
-                fill="none"
-                d="M2 2h44v44H2z"
-              />
+              <path fill="none" d="M2 2h44v44H2z" />
             </svg>
             <span>Sign in with Google</span>
           </button>
