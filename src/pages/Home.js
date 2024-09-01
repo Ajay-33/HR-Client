@@ -1,6 +1,7 @@
 import React from "react";
 import HeroSection from "../components/HeroSection";
 import LinkedIn from "../components/LinkedIn";
+// import GPT from "../components/GPT";
 // import Twitter from "../components/Twitter";
 // import GitHub from "../components/Github";
 

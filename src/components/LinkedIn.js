@@ -13,6 +13,8 @@ import {
   faTrashAlt,
   faCode,
 } from "@fortawesome/free-solid-svg-icons";
+import GPT from "./GPT";
+import KeywordExtractor from "./GPT";
 
 // Limit suggestions to 4
 const MAX_SUGGESTIONS = 4;
@@ -245,6 +247,7 @@ const LinkedIn = () => {
             Find the Right People
           </button>
         </div>
+        <KeywordExtractor/>
       </div>
 
       <div className="relative z-10 w-full md:w-1/3 mx-auto md:pl-8 mt-12 md:mt-0">
