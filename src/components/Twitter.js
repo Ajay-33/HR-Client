@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import SearchModal from "./SearchModal"; // Import the modal component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faCode, faBan, faTrashAlt } from "@fortawesome/free-solid-svg-icons"; // Import icons
+import {
+  faGlobe,
+  faCode,
+  faBan,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons"; // Import icons
 
 const Twitter = () => {
   const [location, setLocation] = useState("");
@@ -16,7 +21,8 @@ const Twitter = () => {
   const [generatedQuery, setGeneratedQuery] = useState("");
 
   const generateLink = () => {
-    const baseURL = "http://www.google.com/search?q=site:twitter.com -inurl:(search|favorites|status|statuses|jobs) -intitle:(job|jobs) -recruiter -HR -careers";
+    const baseURL =
+      "http://www.google.com/search?q=site:twitter.com -inurl:(search|favorites|status|statuses|jobs) -intitle:(job|jobs) -recruiter -HR -careers";
     const query = [
       `+"${location}"`,
       skillsInclude ? `+"${skillsInclude}"` : "",
@@ -42,7 +48,10 @@ const Twitter = () => {
         { location, skillsInclude, skillsExclude, link },
       ];
       setSavedSearches(updatedSearches);
-      localStorage.setItem("savedTwitterSearches", JSON.stringify(updatedSearches));
+      localStorage.setItem(
+        "savedTwitterSearches",
+        JSON.stringify(updatedSearches)
+      );
       setIsModalOpen(false); // close the modal
     }
   };
@@ -59,12 +68,14 @@ const Twitter = () => {
   const handleDeleteSearch = (index) => {
     const updatedSearches = savedSearches.filter((_, i) => i !== index);
     setSavedSearches(updatedSearches);
-    localStorage.setItem("savedTwitterSearches", JSON.stringify(updatedSearches));
+    localStorage.setItem(
+      "savedTwitterSearches",
+      JSON.stringify(updatedSearches)
+    );
   };
 
   return (
     <div className="relative flex flex-col md:flex-row items-start justify-between p-8 mx-auto w-full pb-12 ">
-
       {/* Left side form */}
       <div className="relative z-10 w-full md:w-2/3 px-4 border-r-2 border-white/20">
         <h1 className="text-4xl font-extrabold mb-6 text-white">
@@ -72,7 +83,9 @@ const Twitter = () => {
         </h1>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="relative flex flex-col">
-            <label className="font-semibold text-white mb-2">City or Country:</label>
+            <label className="font-semibold text-white mb-2">
+              City or Country:
+            </label>
             <input
               type="text"
               value={location}
@@ -85,7 +98,9 @@ const Twitter = () => {
             </div>
           </div>
           <div className="relative flex flex-col">
-            <label className="font-semibold text-white mb-2">Skills (keywords) to include:</label>
+            <label className="font-semibold text-white mb-2">
+              Skills (keywords) to include:
+            </label>
             <input
               type="text"
               value={skillsInclude}
@@ -98,7 +113,9 @@ const Twitter = () => {
             </div>
           </div>
           <div className="relative flex flex-col">
-            <label className="font-semibold text-white mb-2">Skills (keywords) to exclude:</label>
+            <label className="font-semibold text-white mb-2">
+              Skills (keywords) to exclude:
+            </label>
             <input
               type="text"
               value={skillsExclude}
@@ -135,7 +152,8 @@ const Twitter = () => {
                   onClick={() => handleGoToGoogle(search.link)}
                   className="text-white font-medium truncate hover:underline hover:cursor-pointer"
                 >
-                  {search.location} - {search.skillsInclude} (Exclude: {search.skillsExclude})
+                  {search.location} - {search.skillsInclude} (Exclude:{" "}
+                  {search.skillsExclude})
                 </span>
                 <div
                   className="space-x-4 text-white/80 hover:cursor-pointer"

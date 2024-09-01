@@ -1,7 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate=useNavigate();
+  const handleLogout=()=>{
+    localStorage.removeItem("token");
+    navigate("/")
+  }
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto flex justify-between items-center py-2 px-4">
@@ -14,7 +19,7 @@ const Navbar = () => {
         <nav className="hidden md:flex space-x-8">
           <Link
             to="/"
-            className="text-gray-700 hover:text-purple-700 transition duration-300"
+            className="text-gray-800 hover:text-purple-700 transition duration-300"
           >
             Home
           </Link>
@@ -38,8 +43,7 @@ const Navbar = () => {
           </Link>
         </nav>
 
-        {/* Right side: Login/Signup Buttons */}
-        <div className="flex space-x-4">
+        {!localStorage.getItem("token")?(<div className="flex space-x-4">
           <Link
             to="/login"
             className="border border-gray-500 hover:bg-gray-200 text-gray-800 py-1 px-3 rounded-full transition duration-300"
@@ -52,8 +56,15 @@ const Navbar = () => {
           >
             Signup
           </Link>
-        </div>
+        </div>):(<div
+            onClick={handleLogout}
+            className="border cursor-pointer border-gray-500 hover:bg-gray-200 text-gray-800 py-1 px-3 rounded-full transition duration-300"
+          >
+            Logout
+          </div>)}
+
       </div>
+
 
       {/* Mobile Menu */}
       <div className="md:hidden bg-gray-100 px-4 py-2">
