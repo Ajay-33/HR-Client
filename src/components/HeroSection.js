@@ -24,7 +24,7 @@ const HeroSection = () => {
         Harness our AI search engine to meet your talent needs efficiently and at scale.
         </p>
         <div className="flex justify-center md:justify-start space-x-4">
-          <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3 px-8 rounded-full shadow-lg hover:from-cyan-400 hover:to-blue-500 transition duration-300 transform hover:scale-105">
+          <button className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 text-white py-3 px-8 rounded-full shadow-lg ">
             Start Free Trial
           </button>
           <button className="bg-transparent text-white border border-white py-3 px-8 rounded-full hover:bg-white hover:text-indigo-900 transition duration-300 transform hover:scale-105">

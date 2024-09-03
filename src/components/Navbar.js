@@ -5,18 +5,19 @@ const Navbar = () => {
   const navigate=useNavigate();
   const handleLogout=()=>{
     localStorage.removeItem("token");
+    localStorage.removeItem("userName")
     navigate("/")
   }
   return (
     <header className="bg-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center py-2 px-4">
+      <div className="container cursor-pointer mx-auto flex justify-between items-center py-2 px-4">
         {/* Left side: Logo or Brand Name */}
-        <div className="text-3xl font-bold text-gray-800">
+        <div onClick={()=>navigate("/")} className="text-3xl font-bold text-gray-800">
           HR <span className="text-purple-700">Shop</span>
         </div>
 
         {/* Center: Navigation Links */}
-        <nav className="hidden md:flex space-x-8">
+        {/* <nav className="hidden md:flex space-x-8">
           <Link
             to="/"
             className="text-gray-800 hover:text-purple-700 transition duration-300"
@@ -41,7 +42,7 @@ const Navbar = () => {
           >
             Github
           </Link>
-        </nav>
+        </nav> */}
 
         {!localStorage.getItem("token")?(<div className="flex space-x-4">
           <Link
