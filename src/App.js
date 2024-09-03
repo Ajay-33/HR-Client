@@ -15,7 +15,7 @@ import Main from "./pages/Main";
 
 function App() {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Router>
         <Navbar />
         <Routes>

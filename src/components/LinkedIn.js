@@ -13,8 +13,8 @@ import {
   faTrashAlt,
   faCode,
 } from "@fortawesome/free-solid-svg-icons";
-import GPT from "./GPT";
-import KeywordExtractor from "./GPT";
+// import GPT from "./KeywordExtract.js";
+import KeywordExtractor from "./KeywordExtract.js";
 
 // Limit suggestions to 4
 const MAX_SUGGESTIONS = 4;
@@ -54,6 +54,7 @@ const LinkedIn = () => {
     return `${baseURL}${encodeURIComponent(query)}`;
   };
 
+
   const handleSearchClick = () => {
     const query = generateLink();
     setGeneratedQuery(query);
@@ -75,8 +76,8 @@ const LinkedIn = () => {
     setIsModalOpen(false);
   };
 
-  const handleGoToGoogle = () => {
-    window.open(generatedQuery, "_blank");
+  const handleGoToGoogle = (generatedLink) => {
+    window.open(generatedLink, "_blank");
   };
 
   const handleDeleteSearch = (index) => {
@@ -117,6 +118,8 @@ const LinkedIn = () => {
         <h1 className="text-4xl font-extrabold mb-6 text-white">
           Explore Profiles with Ease
         </h1>
+        <KeywordExtractor setSavedSearches={setSavedSearches} savedSearches={savedSearches}/>
+        <div className="my-6 border-t border border-white/30"></div>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="relative flex flex-col">
             <label className="font-semibold text-white mb-2">Country:</label>
@@ -242,15 +245,15 @@ const LinkedIn = () => {
           <button
             type="button"
             onClick={handleSearchClick}
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3 px-8 rounded-full shadow-lg hover:from-cyan-400 hover:to-blue-500 transition duration-300 transform hover:scale-105"
+            className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 text-white py-3 px-8 rounded-full shadow-lg"
           >
             Find the Right People
           </button>
         </div>
-        <KeywordExtractor/>
+        
       </div>
 
-      <div className="relative z-10 w-full md:w-1/3 mx-auto md:pl-8 mt-12 md:mt-0">
+      <div className="relative z-5 w-full md:w-1/3 mx-auto md:pl-8 mt-12 md:mt-0">
         <h2 className="text-2xl font-bold text-white mb-4">Saved Searches</h2>
         <div className="space-y-4">
           {savedSearches.length > 0 ? (

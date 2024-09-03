@@ -30,7 +30,7 @@ const SearchModal = ({ isOpen, onClose, query, onCopy, onSave, onOpen }) => {
             Save Search
           </button>
           <button
-            onClick={onOpen}
+            onClick={()=>onOpen(query)}
             className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600"
           >
             Open in Google
