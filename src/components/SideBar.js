@@ -13,7 +13,7 @@ import {
 
 function SideBar() {
   const [isHrShopOpen, setIsHrShopOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("Projects"); // To track the active main sidebar item
+  const [activeItem, setActiveItem] = useState("HRShop"); // To track the active main sidebar item
   const [activeHrShopSearch, setActiveHrShopSearch] = useState(null); // To track the active HRShop search item
 
   const hrShopSearches = [
