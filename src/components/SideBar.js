@@ -1,106 +1,182 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { GitHubLogoIcon, LinkedInLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import React, { useState } from "react";
+import {
+  HomeIcon,
+  FolderIcon,
+  UserGroupIcon,
+  CheckCircleIcon,
+  ChartBarIcon,
+  CogIcon,
+  UserCircleIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/outline";
 
-function Sidebar() {
-  const location = useLocation();
-  const linkedinRef = useRef(null);
-  const githubRef = useRef(null);
-  const twitterRef = useRef(null);
-  const sidebarRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(true);
+function SideBar() {
+  const [isHrShopOpen, setIsHrShopOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("Projects"); // To track the active main sidebar item
+  const [activeHrShopSearch, setActiveHrShopSearch] = useState(null); // To track the active HRShop search item
 
-  useEffect(() => {
-    // Reset all icons to default styles
-    linkedinRef.current.classList.remove("bg-red-500", "text-white");
-    githubRef.current.classList.remove("bg-red-500", "text-white");
-    twitterRef.current.classList.remove("bg-red-500", "text-white");
+  const hrShopSearches = [
+    { id: 1, name: "Search 1" },
+    { id: 2, name: "Search 2" },
+    { id: 3, name: "Search 3" },
+  ];
 
-    // Apply active styles based on current path
-    switch (location.pathname) {
-      case "/":
-        linkedinRef.current.classList.add("bg-red-500", "text-white");
-        break;
-      case "/github":
-        githubRef.current.classList.add("bg-red-500", "text-white");
-        break;
-      case "/twitter":
-        twitterRef.current.classList.add("bg-red-500", "text-white");
-        break;
-      default:
-        break;
-    }
-  }, [location]);
+  const toggleHrShop = () => {
+    setIsHrShopOpen(!isHrShopOpen);
+  };
 
-  useEffect(() => {
-    let lastScrollTop = 0;
+  const handleSidebarItemClick = (item) => {
+    setActiveItem(item);
+    setActiveHrShopSearch(null); // Reset HRShop search when a main item is clicked
+  };
 
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > lastScrollTop) {
-        setIsVisible(false); // Hide on scroll down
-      } else {
-        setIsVisible(true); // Show on scroll up
-      }
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const handleHrShopSearchClick = (searchId) => {
+    setActiveHrShopSearch(searchId);
+  };
 
   return (
-    <div
-      ref={sidebarRef}
-      className={`w-20 fixed  h-3/4  transition-all duration-500 ease-in-out transform ${
-        isVisible ? "translate-x-0 opacity-75" : "-translate-x-full opacity-0"
-      } flex flex-col rounded-r-full shadow-lg`}
-    >
-      <div className="flex-1 flex flex-col items-center justify-around space-y-12 py-8">
-        
-        <Link
-          to="/"
-          className="text-gray-400 hover:text-white transition duration-300"
-          title="LinkedIn"
-        >
+    <div className="w-80 h-full min-h-screen bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col justify-between p-4 space-y-6 shadow-lg font-sans">
+      {/* Projects and HRShop Section */}
+      <div className="flex flex-col space-y-4">
+        {/* Projects Section */}
+        <div className="space-y-3">
           <div
-            ref={linkedinRef}
-            className="p-2 bg-gray-700 rounded-full hover:bg-red-500 transition duration-300 flex items-center justify-center"
+            className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+              activeItem === "Projects" ? "bg-purple-700" : ""
+            }`}
+            onClick={() => handleSidebarItemClick("Projects")}
           >
-            <LinkedInLogoIcon className="w-6 h-6" />
+            <HomeIcon className="h-5 w-5" />
+            <span className="font-medium text-sm">Projects</span>
           </div>
-        </Link>
+        </div>
 
-        <Link
-          to="/github"
-          className="text-gray-400 hover:text-white transition duration-300"
-          title="GitHub"
-        >
+        {/* HRShop Section */}
+        <div className="space-y-2">
           <div
-            ref={githubRef}
-            className="p-2 bg-gray-700 rounded-full hover:bg-red-500 transition duration-300 flex items-center justify-center"
+            className={`flex items-center justify-between cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+              activeItem === "HRShop" ? "bg-purple-700" : ""
+            }`}
+            onClick={() => {
+              handleSidebarItemClick("HRShop");
+              toggleHrShop();
+            }}
           >
-            <GitHubLogoIcon className="w-6 h-6" />
+            <div className="flex items-center space-x-3">
+              <FolderIcon className="h-5 w-5" />
+              <span className="font-medium text-sm">HRShop</span>
+            </div>
+            {isHrShopOpen ? (
+              <ChevronUpIcon className="h-5 w-5" />
+            ) : (
+              <ChevronDownIcon className="h-5 w-5" />
+            )}
           </div>
-        </Link>
 
-        <Link
-          to="/twitter"
-          className="text-gray-400 hover:text-white transition duration-300"
-          title="Twitter"
+          {isHrShopOpen && (
+            <div className="ml-4 mt-2 space-y-2">
+              {hrShopSearches.map((search) => (
+                <div
+                  key={search.id}
+                  className={`flex items-center cursor-pointer hover:bg-purple-700 p-2 rounded-lg transition duration-200 ease-in-out ${
+                    activeHrShopSearch === search.id ? "bg-purple-700" : ""
+                  }`}
+                  onClick={() => handleHrShopSearchClick(search.id)}
+                >
+                  <span className="text-sm">{search.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Shortlist Section */}
+        <div
+          className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+            activeItem === "Shortlist" ? "bg-purple-700" : ""
+          }`}
+          onClick={() => handleSidebarItemClick("Shortlist")}
         >
-          <div
-            ref={twitterRef}
-            className="p-2 bg-gray-700 rounded-full hover:bg-red-500 transition duration-300 flex items-center justify-center"
+          <UserGroupIcon className="h-5 w-5" />
+          <span className="font-medium text-sm">Shortlist</span>
+        </div>
+      </div>
+
+      {/* Sequences, Analytics, and Integrations */}
+      <div className="bg-slate-100 w-full h-0.5"></div>
+      <div className="space-y-4">
+        <div
+          className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+            activeItem === "Sequences" ? "bg-purple-700" : ""
+          }`}
+          onClick={() => handleSidebarItemClick("Sequences")}
+        >
+          <CheckCircleIcon className="h-5 w-5" />
+          <span className="font-medium text-sm">Sequences</span>
+        </div>
+
+        <div
+          className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+            activeItem === "Analytics" ? "bg-purple-700" : ""
+          }`}
+          onClick={() => handleSidebarItemClick("Analytics")}
+        >
+          <ChartBarIcon className="h-5 w-5" />
+          <span className="font-medium text-sm">Analytics</span>
+        </div>
+
+        <div
+          className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
+            activeItem === "Integrations" ? "bg-purple-700" : ""
+          }`}
+          onClick={() => handleSidebarItemClick("Integrations")}
+        >
+          <CogIcon className="h-5 w-5" />
+          <span className="font-medium text-sm">Integrations</span>
+        </div>
+      </div>
+
+      <div className="bg-slate-100 w-full h-0.5"></div>
+
+      {/* Refer, Support, and Profile */}
+      <div className="space-y-6">
+        <div className="flex flex-col space-y-3">
+        <span
+            className={`cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out text-sm ${
+              activeItem === "Refer" ? "bg-purple-600" : ""
+            }`}
+            onClick={() => handleSidebarItemClick("Refer")}
           >
-            <TwitterLogoIcon className="w-6 h-6" />
+            Refer and Earn
+          </span>
+          <span
+            className={`cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out text-sm ${
+              activeItem === "Support" ? "bg-purple-600" : ""
+            }`}
+            onClick={() => handleSidebarItemClick("Support")}
+          >
+            Contact Support
+          </span>
+        </div>
+
+        <div
+          className={`mt-auto flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out border border-purple-700 ${
+            activeItem === "Profile" ? "bg-purple-600" : ""
+          }`}
+          onClick={() => handleSidebarItemClick("Profile")}
+        >
+          <UserCircleIcon className="h-5 w-5" />
+          <div>
+            <span className="block font-semibold text-sm">Ajay Dornala</span>
+            <span className="block text-xs text-gray-400">
+              Ajay's Workspace
+            </span>
           </div>
-        </Link>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Sidebar;
+export default SideBar;
