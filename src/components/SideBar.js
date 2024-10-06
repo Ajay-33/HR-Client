@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   HomeIcon,
   FolderIcon,
@@ -10,11 +10,14 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
+import { useNavigate } from "react-router-dom";
 
 function SideBar() {
   const [isHrShopOpen, setIsHrShopOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("HRShop"); // To track the active main sidebar item
-  const [activeHrShopSearch, setActiveHrShopSearch] = useState(null); // To track the active HRShop search item
+  const [activeItem, setActiveItem] = useState("HRShop");
+  const [activeHrShopSearch, setActiveHrShopSearch] = useState(null);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef(null);
 
   const hrShopSearches = [
     { id: 1, name: "Search 1" },
@@ -35,8 +38,49 @@ function SideBar() {
     setActiveHrShopSearch(searchId);
   };
 
+  const handleProfileClick = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Example API call to logout
+      await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      // Navigate to the login page after successful logout
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Close the dropdown when clicking outside of it
+    const handleClickOutside = (event) => {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target)
+      ) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="w-80 h-full min-h-screen bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col justify-between p-4 space-y-6 shadow-lg font-sans">
+    <div className="w-64 min-w-64 max-w-64 h-full min-h-screen bg-gradient-to-b from-purple-900 to-purple-800 text-white flex flex-col justify-between p-4 space-y-6 shadow-lg font-sans">
       {/* Projects and HRShop Section */}
       <div className="flex flex-col space-y-4">
         {/* Projects Section */}
@@ -61,6 +105,7 @@ function SideBar() {
             onClick={() => {
               handleSidebarItemClick("HRShop");
               toggleHrShop();
+              navigate("/main");
             }}
           >
             <div className="flex items-center space-x-3">
@@ -96,7 +141,10 @@ function SideBar() {
           className={`flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
             activeItem === "Shortlist" ? "bg-purple-700" : ""
           }`}
-          onClick={() => handleSidebarItemClick("Shortlist")}
+          onClick={() => {
+            handleSidebarItemClick("Shortlist");
+            navigate("/shortlist");
+          }}
         >
           <UserGroupIcon className="h-5 w-5" />
           <span className="font-medium text-sm">Shortlist</span>
@@ -142,7 +190,7 @@ function SideBar() {
       {/* Refer, Support, and Profile */}
       <div className="space-y-6">
         <div className="flex flex-col space-y-3">
-        <span
+          <span
             className={`cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out text-sm ${
               activeItem === "Refer" ? "bg-purple-600" : ""
             }`}
@@ -161,10 +209,11 @@ function SideBar() {
         </div>
 
         <div
-          className={`mt-auto flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out border border-purple-700 ${
+          className={`mt-auto flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out border border-purple-700 relative ${
             activeItem === "Profile" ? "bg-purple-600" : ""
           }`}
-          onClick={() => handleSidebarItemClick("Profile")}
+          onClick={handleProfileClick}
+          ref={profileDropdownRef}
         >
           <UserCircleIcon className="h-5 w-5" />
           <div>
@@ -173,6 +222,23 @@ function SideBar() {
               Ajay's Workspace
             </span>
           </div>
+
+          {isProfileDropdownOpen && (
+            <div className="absolute bottom-12 right-0 w-40 bg-purple-900 text-white rounded-lg shadow-lg z-10">
+              <div
+                className="p-2 hover:bg-purple-700 cursor-pointer transition duration-200 ease-in-out"
+                onClick={() => navigate("/profile")}
+              >
+                View Profile
+              </div>
+              <div
+                className="p-2 hover:bg-purple-700 cursor-pointer transition duration-200 ease-in-out"
+                onClick={handleLogout}
+              >
+                Logout
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
