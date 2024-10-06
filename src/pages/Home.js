@@ -1,12 +1,16 @@
 import React from "react";
 import HeroSection from "../components/HeroSection";
 import LinkedIn from "../components/LinkedIn";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 // import GPT from "../components/GPT";
 // import Twitter from "../components/Twitter";
 // import GitHub from "../components/Github";
 
 function Home() {
   return (
+    <div>
+      <Navbar/>
     <div className="relative bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900">
       <HeroSection />
       <div className="absolute inset-0 overflow-hidden">
@@ -19,6 +23,8 @@ function Home() {
       <div className="relative z-10">
         <LinkedIn />
       </div>
+    </div>
+    <Footer />
     </div>
   );
 }

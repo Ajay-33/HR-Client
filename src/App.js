@@ -1,32 +1,71 @@
-import React from "react";
-import "./App.css";
-import LinkedIn from "./components/LinkedIn";
-import Navbar from "./components/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Twitter from "./components/Twitter";
-import Github from "./components/Github";
-import Footer from "./components/Footer";
-import Sidebar from "./components/SideBar";
-import HeroSection from "./components/HeroSection";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import SideBar from "./components/SideBar";
 import Home from "./pages/Home";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Main from "./pages/Main";
+import Shortlist from "./components/Shortlist";
+
+function AppContent() {
+  const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
+
+  const handleShortlist = (candidate) => {
+    setShortlistedCandidates((prevShortlisted) => {
+      const isAlreadyShortlisted = prevShortlisted.some(
+        (shortlisted) => shortlisted.full_name === candidate.full_name
+      );
+
+      if (isAlreadyShortlisted) {
+        // Remove from shortlist if already present
+        return prevShortlisted.filter(
+          (shortlisted) => shortlisted.full_name !== candidate.full_name
+        );
+      } else {
+        // Add to shortlist
+        return [...prevShortlisted, candidate];
+      }
+    });
+  };
+
+  const location = useLocation(); // Get the current route
+
+  const hideSidebarRoutes = ["/", "/login", "/signup"]; // Routes where Sidebar shouldn't render
+
+  return (
+    <div className="overflow-x-hidden flex">
+      {/* Conditionally render SideBar based on the current route */}
+      {!hideSidebarRoutes.includes(location.pathname) && <SideBar />}
+
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route
+          exact
+          path="/main"
+          element={
+            <Main
+              shortlistedCandidates={shortlistedCandidates} // Pass shortlisted candidates
+              onShortlist={handleShortlist} // Pass shortlist handler
+            />
+          }
+        />
+        <Route
+          exact
+          path="/shortlist"
+          element={<Shortlist shortlistedCandidates={shortlistedCandidates} />} // Pass shortlisted candidates
+        />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/login" element={<Login />} />
+      </Routes>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="overflow-x-hidden">
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/main" element={<Main/>}/>
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/login" element={<Login />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 
