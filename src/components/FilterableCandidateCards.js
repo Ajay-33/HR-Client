@@ -14,40 +14,60 @@ function FilterableCandidateCards({
   const [selectedCandidate, setSelectedCandidate] = useState(null); // State to handle selected candidate
 
   const filterCandidates = () => {
-    console.log("Hi"+searchLocation,searchEducation,searchSkills,searchJobTitles);
-    
+    // Logging the input search criteria
+    console.log("Search Criteria:");
+    console.log(`Locations: ${JSON.stringify(searchLocation)}`);
+    console.log(`Education: ${JSON.stringify(searchEducation)}`);
+    console.log(`Skills: ${JSON.stringify(searchSkills)}`);
+    console.log(`Job Titles: ${JSON.stringify(searchJobTitles)}`);
+    console.log(`----------------------`);
+  
     return candidate_data_cleaned.filter((candidate) => {
+      // Location Matching
       const matchesLocation =
         candidate.location &&
         Array.isArray(searchLocation) &&
         searchLocation.length > 0 &&
         searchLocation.some(
-          (loc) => loc.toLowerCase() === candidate.location.toLowerCase()
+          (loc) => candidate.location.toLowerCase().includes(loc.toLowerCase())
         );
-  
+      
+      // Debug Location
       console.log(`Candidate Name: ${candidate.full_name}`);
       console.log(`Candidate Location: ${candidate.location}`);
       console.log(`Search Location: ${searchLocation}`);
       console.log(`Matches Location: ${matchesLocation}`);
   
+      // Education Matching
       const matchesEducation =
         searchEducation.length === 0 || // No education provided, skip check
         (candidate.education_1 &&
           searchEducation.some(
-            (edu) => candidate.education_1.toLowerCase() === edu.toLowerCase()
+            (edu) => candidate.education_1.toLowerCase().includes(edu.toLowerCase())
           )) ||
         (candidate.education_2 &&
           searchEducation.some(
-            (edu) => candidate.education_2.toLowerCase() === edu.toLowerCase()
+            (edu) => candidate.education_2.toLowerCase().includes(edu.toLowerCase())
           ));
+      
+      // Debug Education
+      console.log(`Candidate Education 1: ${candidate.education_1}`);
+      console.log(`Candidate Education 2: ${candidate.education_2}`);
+      console.log(`Matches Education: ${matchesEducation}`);
   
+      // Skills Matching
       const matchesSkills =
         candidate.skills &&
         typeof candidate.skills === "string" &&
         searchSkills.some((searchSkill) =>
           candidate.skills.toLowerCase().includes(searchSkill.toLowerCase())
         );
+      
+      // Debug Skills
+      console.log(`Candidate Skills: ${candidate.skills}`);
+      console.log(`Matches Skills: ${matchesSkills}`);
   
+      // Job Titles Matching
       const matchesJobTitles = searchJobTitles.some(
         (jobTitle) =>
           candidate.current_position_1 &&
@@ -56,14 +76,17 @@ function FilterableCandidateCards({
             .toLowerCase()
             .includes(jobTitle.toLowerCase())
       );
-  
-      console.log(`Matches Skills: ${matchesSkills}`);
+      
+      // Debug Job Titles
+      console.log(`Candidate Current Position: ${candidate.current_position_1}`);
       console.log(`Matches Job Titles: ${matchesJobTitles}`);
       console.log(`----------------------`);
   
-      return matchesLocation ;
+      // Returning only based on Location match for now as per your previous example
+      return matchesLocation; // You can adjust this condition as needed.
     });
   };
+  
   
 
   // Helper function to truncate text
