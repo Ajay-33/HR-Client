@@ -7,8 +7,7 @@ import {
   ChartBarIcon,
   CogIcon,
   UserCircleIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
+  UserAddIcon,
 } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 
@@ -17,16 +16,64 @@ function SideBar() {
   const [activeItem, setActiveItem] = useState("HRShop");
   const [activeHrShopSearch, setActiveHrShopSearch] = useState(null);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [showAllSearches, setShowAllSearches] = useState(false); // To toggle "Show more"
   const profileDropdownRef = useRef(null);
 
-  const hrShopSearches = [
-    { id: 1, name: "Search 1" },
-    { id: 2, name: "Search 2" },
-    { id: 3, name: "Search 3" },
-  ];
+  const [searches, setSearches] = useState([]); // Initialize as empty array
+  const navigate = useNavigate();
+
+  // Fetch user searches on component mount
+  useEffect(() => {
+    const fetchSearches = async () => {
+      try {
+        const response = await fetch("http://localhost:8060/api/v1/search/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+        const data = await response.json();
+        
+        if (response.ok && Array.isArray(data)) {
+          setSearches(data); // Only set if data is an array
+        } else {
+          setSearches([]); // Set to empty if data is not an array
+          console.error("Unexpected response format:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch searches:", error);
+        setSearches([]); // Fallback to empty array on error
+      }
+    };
+    fetchSearches();
+  }, []);
+
+  const handleAddSearch = async () => {
+    const newSearchName = `Search ${searches.length + 1}`; // Create a unique name for each new search
+    try {
+      const response = await fetch("http://localhost:8060/api/v1/search/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ searchName: newSearchName }),
+      });
+      const data = await response.json();
+      
+      if (response.ok && data.searches) {
+        setSearches(data.searches); // Update the searches with the newly added search
+      } else {
+        console.error("Failed to add search:", data);
+      }
+    } catch (error) {
+      console.error("Failed to add search:", error);
+    }
+  };
 
   const toggleHrShop = () => {
-    setIsHrShopOpen(!isHrShopOpen);
+    setIsHrShopOpen((prev) => !prev);
   };
 
   const handleSidebarItemClick = (item) => {
@@ -44,14 +91,12 @@ function SideBar() {
 
   const handleLogout = async () => {
     try {
-      // Example API call to logout
       await fetch("/api/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      // Navigate to the login page after successful logout
       localStorage.removeItem("token");
       localStorage.removeItem("userName");
       navigate("/");
@@ -59,8 +104,6 @@ function SideBar() {
       console.error("Logout failed", error);
     }
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Close the dropdown when clicking outside of it
@@ -104,7 +147,7 @@ function SideBar() {
             }`}
             onClick={() => {
               handleSidebarItemClick("HRShop");
-              toggleHrShop();
+              setIsHrShopOpen(true); // Ensure HRShop dropdown remains open
               navigate("/main");
             }}
           >
@@ -112,26 +155,31 @@ function SideBar() {
               <FolderIcon className="h-5 w-5" />
               <span className="font-medium text-sm">HRShop</span>
             </div>
-            {isHrShopOpen ? (
-              <ChevronUpIcon className="h-5 w-5" />
-            ) : (
-              <ChevronDownIcon className="h-5 w-5" />
-            )}
+            <UserAddIcon onClick={handleAddSearch} className="h-5 w-5" />
           </div>
 
-          {isHrShopOpen && (
+          {isHrShopOpen && searches.length > 0 && (
             <div className="ml-4 mt-2 space-y-2">
-              {hrShopSearches.map((search) => (
+              {(showAllSearches ? searches : searches.slice(0, 4)).map((search) => (
                 <div
-                  key={search.id}
+                  key={search.searchName}
                   className={`flex items-center cursor-pointer hover:bg-purple-700 p-2 rounded-lg transition duration-200 ease-in-out ${
-                    activeHrShopSearch === search.id ? "bg-purple-700" : ""
+                    activeHrShopSearch === search.searchName ? "bg-purple-700" : ""
                   }`}
-                  onClick={() => handleHrShopSearchClick(search.id)}
+                  onClick={() => handleHrShopSearchClick(search.searchName)}
                 >
-                  <span className="text-sm">{search.name}</span>
+                  <span className="text-sm">{search.searchName}</span>
                 </div>
               ))}
+              
+              {searches.length > 4 && (
+                <button
+                  className="text-purple-300 hover:text-white text-sm mt-2"
+                  onClick={() => setShowAllSearches((prev) => !prev)}
+                >
+                  {showAllSearches ? "Show Less" : "Show More"}
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -151,7 +199,7 @@ function SideBar() {
         </div>
       </div>
 
-      {/* Sequences, Analytics, and Integrations */}
+      {/* Additional Sections */}
       <div className="bg-slate-100 w-full h-0.5"></div>
       <div className="space-y-4">
         <div
@@ -185,29 +233,9 @@ function SideBar() {
         </div>
       </div>
 
+      {/* Profile and Logout */}
       <div className="bg-slate-100 w-full h-0.5"></div>
-
-      {/* Refer, Support, and Profile */}
       <div className="space-y-6">
-        <div className="flex flex-col space-y-3">
-          <span
-            className={`cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out text-sm ${
-              activeItem === "Refer" ? "bg-purple-600" : ""
-            }`}
-            onClick={() => handleSidebarItemClick("Refer")}
-          >
-            Refer and Earn
-          </span>
-          <span
-            className={`cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out text-sm ${
-              activeItem === "Support" ? "bg-purple-600" : ""
-            }`}
-            onClick={() => handleSidebarItemClick("Support")}
-          >
-            Contact Support
-          </span>
-        </div>
-
         <div
           className={`mt-auto flex items-center space-x-3 cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out border border-purple-700 relative ${
             activeItem === "Profile" ? "bg-purple-600" : ""

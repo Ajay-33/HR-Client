@@ -39,21 +39,21 @@ function FilterableCandidateCards({
       console.log(`Matches Location: ${matchesLocation}`);
   
       // Education Matching
-      const matchesEducation =
-        searchEducation.length === 0 || // No education provided, skip check
-        (candidate.education_1 &&
-          searchEducation.some(
-            (edu) => candidate.education_1.toLowerCase().includes(edu.toLowerCase())
-          )) ||
-        (candidate.education_2 &&
-          searchEducation.some(
-            (edu) => candidate.education_2.toLowerCase().includes(edu.toLowerCase())
-          ));
+      // const matchesEducation =
+      //   searchEducation.length === 0 || // No education provided, skip check
+      //   (candidate.education_1 &&
+      //     searchEducation.some(
+      //       (edu) => candidate.education_1.toLowerCase().includes(edu.toLowerCase())
+      //     )) ||
+      //   (candidate.education_2 &&
+      //     searchEducation.some(
+      //       (edu) => candidate.education_2.toLowerCase().includes(edu.toLowerCase())
+      //     ));
       
-      // Debug Education
-      console.log(`Candidate Education 1: ${candidate.education_1}`);
-      console.log(`Candidate Education 2: ${candidate.education_2}`);
-      console.log(`Matches Education: ${matchesEducation}`);
+      // // Debug Education
+      // console.log(`Candidate Education 1: ${candidate.education_1}`);
+      // console.log(`Candidate Education 2: ${candidate.education_2}`);
+      // console.log(`Matches Education: ${matchesEducation}`);
   
       // Skills Matching
       const matchesSkills =
@@ -83,7 +83,7 @@ function FilterableCandidateCards({
       console.log(`----------------------`);
   
       // Returning only based on Location match for now as per your previous example
-      return matchesLocation; // You can adjust this condition as needed.
+      return matchesLocation && matchesSkills ; // You can adjust this condition as needed.
     });
   };
   

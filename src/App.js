@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import Home from "./pages/Home";
+// import Home from "./components/Home";
+
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Main from "./pages/Main";
 import Shortlist from "./components/Shortlist";
+import ProfileDisplay from "./components/ProfileDisplay";
 
 function AppContent() {
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
@@ -39,6 +42,7 @@ function AppContent() {
 
       <Routes>
         <Route exact path="/" element={<Home />} />
+        {/* <Route exact path="/profile" element={<ProfileDisplay/>} /> */}
         <Route
           exact
           path="/main"
