@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import { MdClose } from "react-icons/md"; // Close button icon
 import candidate_data_cleaned from "../candidate_data_cleaned.js";
+import { useParams } from "react-router-dom";
 
 function FilterableCandidateCards({
   searchLocation,
@@ -11,62 +12,71 @@ function FilterableCandidateCards({
   onShortlist,
   shortlistedCandidates,
 }) {
-  const [selectedCandidate, setSelectedCandidate] = useState(null); // State to handle selected candidate
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const { id } = useParams(); // Get search ID from route params
 
+  // Function to handle database update for shortlisting
+  const updateShortlistInDatabase = async (candidate) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8060/api/v1/search/updateShortlist/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            searchId: id,
+            candidate: {
+              name: candidate.full_name,
+              role: candidate.current_position_1 || "Unknown Role",
+              organization: candidate.company_name || "Unknown Organization",
+              education: candidate.education_1 || "Not Specified",
+              location: candidate.location || "Unknown Location",
+              status: "Not Contacted",  
+              linkedin: candidate.linkedin || null,
+              github: candidate.github || null,
+              email: candidate.email || null,
+              phone: candidate.phone || null,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok)
+        throw new Error("Failed to update shortlist in database");
+      console.log("Shortlist updated in the database successfully.");
+    } catch (error) {
+      console.error("Error updating shortlist in database:", error);
+    }
+  };
+
+  // Shortlist handler to update both UI and database
+  const handleShortlist = (candidate) => {
+    updateShortlistInDatabase(candidate); // Update database
+    onShortlist(candidate); // Update UI shortlist
+  };
+
+  // Candidate filter logic
   const filterCandidates = () => {
-    // Logging the input search criteria
-    console.log("Search Criteria:");
-    console.log(`Locations: ${JSON.stringify(searchLocation)}`);
-    console.log(`Education: ${JSON.stringify(searchEducation)}`);
-    console.log(`Skills: ${JSON.stringify(searchSkills)}`);
-    console.log(`Job Titles: ${JSON.stringify(searchJobTitles)}`);
-    console.log(`----------------------`);
-  
     return candidate_data_cleaned.filter((candidate) => {
       // Location Matching
       const matchesLocation =
         candidate.location &&
         Array.isArray(searchLocation) &&
         searchLocation.length > 0 &&
-        searchLocation.some(
-          (loc) => candidate.location.toLowerCase().includes(loc.toLowerCase())
+        searchLocation.some((loc) =>
+          candidate.location.toLowerCase().includes(loc.toLowerCase())
         );
-      
-      // Debug Location
-      console.log(`Candidate Name: ${candidate.full_name}`);
-      console.log(`Candidate Location: ${candidate.location}`);
-      console.log(`Search Location: ${searchLocation}`);
-      console.log(`Matches Location: ${matchesLocation}`);
-  
-      // Education Matching
-      // const matchesEducation =
-      //   searchEducation.length === 0 || // No education provided, skip check
-      //   (candidate.education_1 &&
-      //     searchEducation.some(
-      //       (edu) => candidate.education_1.toLowerCase().includes(edu.toLowerCase())
-      //     )) ||
-      //   (candidate.education_2 &&
-      //     searchEducation.some(
-      //       (edu) => candidate.education_2.toLowerCase().includes(edu.toLowerCase())
-      //     ));
-      
-      // // Debug Education
-      // console.log(`Candidate Education 1: ${candidate.education_1}`);
-      // console.log(`Candidate Education 2: ${candidate.education_2}`);
-      // console.log(`Matches Education: ${matchesEducation}`);
-  
-      // Skills Matching
+
+      // Skills Matching with type check for string
       const matchesSkills =
-        candidate.skills &&
         typeof candidate.skills === "string" &&
         searchSkills.some((searchSkill) =>
           candidate.skills.toLowerCase().includes(searchSkill.toLowerCase())
         );
-      
-      // Debug Skills
-      console.log(`Candidate Skills: ${candidate.skills}`);
-      console.log(`Matches Skills: ${matchesSkills}`);
-  
+
       // Job Titles Matching
       const matchesJobTitles = searchJobTitles.some(
         (jobTitle) =>
@@ -76,35 +86,24 @@ function FilterableCandidateCards({
             .toLowerCase()
             .includes(jobTitle.toLowerCase())
       );
-      
-      // Debug Job Titles
-      console.log(`Candidate Current Position: ${candidate.current_position_1}`);
-      console.log(`Matches Job Titles: ${matchesJobTitles}`);
-      console.log(`----------------------`);
-  
-      // Returning only based on Location match for now as per your previous example
-      return matchesLocation && matchesSkills ; // You can adjust this condition as needed.
+
+      return matchesLocation && matchesSkills; // Adjust condition as needed
     });
   };
-  
-  
 
   // Helper function to truncate text
   const truncateText = (text, limit) => {
     return text.length > limit ? text.substring(0, limit) + "..." : text;
   };
 
-  // Function to handle card click and display the side panel
   const handleCardClick = (candidate) => {
-    setSelectedCandidate(candidate); // Set the selected candidate for the side panel
+    setSelectedCandidate(candidate);
   };
 
-  // Function to close the side panel
   const closeSidePanel = () => {
-    setSelectedCandidate(null); // Reset the selected candidate, closing the panel
+    setSelectedCandidate(null);
   };
 
-  // Get filtered candidates based on search inputs
   const filteredCandidates = filterCandidates();
 
   return (
@@ -122,10 +121,7 @@ function FilterableCandidateCards({
                 (shortlisted) => shortlisted.full_name === candidate.full_name
               );
 
-              const skillsArray =
-                candidate.skills && typeof candidate.skills === "string"
-                  ? candidate.skills.split(",")
-                  : [];
+              const skillsArray = candidate.skills?.split(",") || [];
 
               return (
                 <div
@@ -134,13 +130,11 @@ function FilterableCandidateCards({
                   onClick={() => handleCardClick(candidate)}
                 >
                   <div className="flex items-center space-x-4">
-                    {/* Placeholder Image */}
                     <img
                       src={`https://picsum.photos/seed/${candidate.full_name}/50`}
                       alt={candidate.full_name}
                       className="w-12 h-12 rounded-full"
                     />
-                    {/* Candidate Info */}
                     <div>
                       <h2 className="text-lg font-semibold text-gray-800 truncate">
                         {candidate.full_name}
@@ -153,7 +147,9 @@ function FilterableCandidateCards({
 
                   <div className="flex-grow">
                     <p className="text-sm">
-                      <strong className="text-gray-700">Current Position: </strong>
+                      <strong className="text-gray-700">
+                        Current Position:{" "}
+                      </strong>
                       {truncateText(candidate.current_position_1 || "N/A", 80)}
                     </p>
 
@@ -172,7 +168,6 @@ function FilterableCandidateCards({
                     )}
                   </div>
 
-                  {/* Actions Section */}
                   <div className="flex space-x-4 items-center">
                     <div className="flex space-x-2">
                       {candidate.linkedin && (
@@ -211,7 +206,7 @@ function FilterableCandidateCards({
                     <button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent opening panel on button click
-                        onShortlist(candidate);
+                        handleShortlist(candidate); // Use the modified shortlist handler
                       }}
                       className={`${
                         isShortlisted
@@ -227,7 +222,9 @@ function FilterableCandidateCards({
             })
           ) : (
             <div className="text-center col-span-full">
-              <p className="text-gray-500">No profiles match your search criteria.</p>
+              <p className="text-gray-500">
+                No profiles match your search criteria.
+              </p>
             </div>
           )}
         </div>

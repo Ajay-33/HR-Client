@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+// import { useParams } from "react-router-dom";
 import { SearchIcon } from "@heroicons/react/outline";
 import FilterableCandidateCards from "../components/FilterableCandidateCards";
 
 function Main({ shortlistedCandidates, onShortlist }) {
+  // const { id } = useParams(); 
   const [sentence, setSentence] = useState("");
   const [extractedInfo, setExtractedInfo] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
