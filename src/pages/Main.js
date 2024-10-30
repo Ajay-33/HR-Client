@@ -12,7 +12,7 @@ function Main({ shortlistedCandidates, onShortlist }) {
     try {
       setIsFetching(true);
       setSearchInitiated(true);
-      const response = await fetch("http://localhost:8000/api/v1/search/gpt", {
+      const response = await fetch("http://localhost:8060/api/v1/search/gpt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

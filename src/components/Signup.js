@@ -31,7 +31,7 @@ function SignUp() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/register",
+        "http://localhost:8060/api/v1/auth/register",
         {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 relative overflow-hidden">
+    <div className="w-full flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 relative overflow-hidden">
       {/* Background Blurred Circles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/3 right-1/4 w-36 h-36 bg-teal-400 rounded-full opacity-60 mix-blend-multiply animate-pulse blur-xl"></div>
