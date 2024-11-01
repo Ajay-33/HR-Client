@@ -16,41 +16,49 @@ function SideBar() {
   const [activeItem, setActiveItem] = useState("HRShop");
   const [activeHrShopSearch, setActiveHrShopSearch] = useState(null);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [showAllSearches, setShowAllSearches] = useState(false); // To toggle "Show more"
+  const [showAllSearches, setShowAllSearches] = useState(false);
   const profileDropdownRef = useRef(null);
 
-  const [searches, setSearches] = useState([]); // Initialize as empty array
+  const [searches, setSearches] = useState([]);
   const navigate = useNavigate();
 
   // Fetch user searches on component mount
   useEffect(() => {
     const fetchSearches = async () => {
       try {
-        const response = await fetch("http://localhost:8060/api/v1/search/get", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          "http://localhost:8060/api/v1/search/get",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         const data = await response.json();
-        
+
         if (response.ok && Array.isArray(data)) {
-          setSearches(data); // Only set if data is an array
+          setSearches(data);
+          // Navigate to the first search item if available on initial load
+          if (data.length > 0) {
+            navigate(`/main/${data[0]._id}`);
+            setActiveHrShopSearch(data[0].searchName);
+          }
         } else {
-          setSearches([]); // Set to empty if data is not an array
+          setSearches([]);
           console.error("Unexpected response format:", data);
         }
       } catch (error) {
         console.error("Failed to fetch searches:", error);
-        setSearches([]); // Fallback to empty array on error
+        setSearches([]);
       }
     };
     fetchSearches();
   }, []);
 
   const handleAddSearch = async () => {
-    const newSearchName = `Search ${searches.length + 1}`; // Create a unique name for each new search
+    const newSearchName = `Search ${searches.length + 1}`;
     try {
       const response = await fetch("http://localhost:8060/api/v1/search/add", {
         method: "POST",
@@ -61,9 +69,9 @@ function SideBar() {
         body: JSON.stringify({ searchName: newSearchName }),
       });
       const data = await response.json();
-      
+
       if (response.ok && data.searches) {
-        setSearches(data.searches); // Update the searches with the newly added search
+        setSearches(data.searches);
       } else {
         console.error("Failed to add search:", data);
       }
@@ -74,15 +82,21 @@ function SideBar() {
 
   const toggleHrShop = () => {
     setIsHrShopOpen((prev) => !prev);
+    setActiveItem("HRShop");
+    if (searches.length > 0) {
+      navigate(`/main/${searches[0]._id}`);
+      setActiveHrShopSearch(searches[0].searchName);
+    }
   };
 
   const handleSidebarItemClick = (item) => {
     setActiveItem(item);
-    setActiveHrShopSearch(null); // Reset HRShop search when a main item is clicked
+    setActiveHrShopSearch(null);
   };
 
-  const handleHrShopSearchClick = (searchId) => {
-    setActiveHrShopSearch(searchId);
+  const handleHrShopSearchClick = (search) => {
+    setActiveHrShopSearch(search.searchName);
+    navigate(`/main/${search._id}`);
   };
 
   const handleProfileClick = () => {
@@ -145,11 +159,7 @@ function SideBar() {
             className={`flex items-center justify-between cursor-pointer hover:bg-purple-700 p-3 rounded-lg transition duration-200 ease-in-out ${
               activeItem === "HRShop" ? "bg-purple-700" : ""
             }`}
-            onClick={() => {
-              handleSidebarItemClick("HRShop");
-              setIsHrShopOpen(true); // Ensure HRShop dropdown remains open
-              navigate("/main");
-            }}
+            onClick={toggleHrShop}
           >
             <div className="flex items-center space-x-3">
               <FolderIcon className="h-5 w-5" />
@@ -160,18 +170,22 @@ function SideBar() {
 
           {isHrShopOpen && searches.length > 0 && (
             <div className="ml-4 mt-2 space-y-2">
-              {(showAllSearches ? searches : searches.slice(0, 4)).map((search) => (
-                <div
-                  key={search.searchName}
-                  className={`flex items-center cursor-pointer hover:bg-purple-700 p-2 rounded-lg transition duration-200 ease-in-out ${
-                    activeHrShopSearch === search.searchName ? "bg-purple-700" : ""
-                  }`}
-                  onClick={() => handleHrShopSearchClick(search.searchName)}
-                >
-                  <span className="text-sm">{search.searchName}</span>
-                </div>
-              ))}
-              
+              {(showAllSearches ? searches : searches.slice(0, 4)).map(
+                (search) => (
+                  <div
+                    key={search._id}
+                    className={`flex items-center cursor-pointer hover:bg-purple-700 p-2 rounded-lg transition duration-200 ease-in-out ${
+                      activeHrShopSearch === search.searchName
+                        ? "bg-purple-700"
+                        : ""
+                    }`}
+                    onClick={() => handleHrShopSearchClick(search)}
+                  >
+                    <span className="text-sm">{search.searchName}</span>
+                  </div>
+                )
+              )}
+
               {searches.length > 4 && (
                 <button
                   className="text-purple-300 hover:text-white text-sm mt-2"

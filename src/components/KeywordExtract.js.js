@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SearchModal from "./SearchModal"; // Import the SearchModal component
+import SearchModal from "./SearchModal"; 
 
 function KeywordExtractor({ setSavedSearches,savedSearches }) {
   const [sentence, setSentence] = useState("");
