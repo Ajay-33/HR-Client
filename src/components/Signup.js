@@ -31,7 +31,7 @@ function SignUp() {
 
     try {
       const response = await fetch(
-        "http://localhost:8060/api/v1/auth/register",
+        `${process.env.REACT_APP_HOST}/api/v1/auth/register`,
         {
           method: "POST",
           headers: {

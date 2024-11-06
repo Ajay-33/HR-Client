@@ -33,7 +33,7 @@ function KeywordExtractor({ setSavedSearches,savedSearches }) {
 
   const handleExtract = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/search/gpt", {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/search/gpt`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -19,7 +19,7 @@ function FilterableCandidateCards({
   const updateShortlistInDatabase = async (candidate) => {
     try {
       const response = await fetch(
-        `http://localhost:8060/api/v1/search/updateShortlist/${id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/search/updateShortlist/${id}`,
         {
           method: "POST",
           headers: {

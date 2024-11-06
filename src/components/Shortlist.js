@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FaLinkedin, FaGithub, FaEnvelope, FaPhone } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+
 
 function Shortlist() {
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchShortlistedCandidates = async () => {
       try {
-        const response = await fetch("http://localhost:8060/api/v1/search/getShortlist", {
+        const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/search/getShortlist`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -34,10 +37,14 @@ function Shortlist() {
     const options = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" };
     return new Date(date).toLocaleDateString("en-US", options);
   };
+  const handleEmailClick = (candidate) => {
+    navigate("/emailform", { state: { name: candidate.name, email: candidate.email } });
+  };
+  
 
   const handleStatusChange = async (candidate, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:8060/api/v1/candidate/updateStatus/${candidate.searchId}/${candidate._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/candidate/updateStatus/${candidate.searchId}/${candidate._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -119,9 +126,9 @@ function Shortlist() {
                           </a>
                         )}
                         {candidate.email && (
-                          <a href={`mailto:${candidate.email}`}>
+                          <button onClick={() => handleEmailClick(candidate)}>
                             <FaEnvelope className="text-red-500" />
-                          </a>
+                          </button>
                         )}
                         {candidate.phone && (
                           <a href={`tel:${candidate.phone}`}>

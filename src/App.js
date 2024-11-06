@@ -6,6 +6,8 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Main from "./pages/Main";
 import Shortlist from "./components/Shortlist";
+import Dashboard from "./components/Dashboard";
+import EmailForm from "./components/EmailForm";
 
 function AppContent() {
   const [shortlistedCandidates, setShortlistedCandidates] = useState([]);
@@ -52,6 +54,9 @@ function AppContent() {
         />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/emailform" element={<EmailForm />} />
+        
       </Routes>
     </div>
   );

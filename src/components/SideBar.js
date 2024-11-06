@@ -27,7 +27,7 @@ function SideBar() {
     const fetchSearches = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8060/api/v1/search/get",
+          `${process.env.REACT_APP_HOST}/api/v1/search/get`,
           {
             method: "GET",
             headers: {
@@ -60,7 +60,7 @@ function SideBar() {
   const handleAddSearch = async () => {
     const newSearchName = `Search ${searches.length + 1}`;
     try {
-      const response = await fetch("http://localhost:8060/api/v1/search/add", {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/search/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +92,13 @@ function SideBar() {
   const handleSidebarItemClick = (item) => {
     setActiveItem(item);
     setActiveHrShopSearch(null);
+  
+    // Navigate to dashboard when "Integrations" is clicked
+    if (item === "Integrations") {
+      navigate("/dashboard");
+    }
   };
+  
 
   const handleHrShopSearchClick = (search) => {
     setActiveHrShopSearch(search.searchName);
